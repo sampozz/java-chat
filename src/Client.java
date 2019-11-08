@@ -1,7 +1,7 @@
 import java.net.*;
 import java.io.*;
 
-public class JChatClient {
+public class Client {
 
     public static void main(String[] args) throws IOException {
         
@@ -14,27 +14,28 @@ public class JChatClient {
         
         try {
             
-            // creazione socket
-            Socket socket = new Socket(indirizzo, JChatServer.PORT);
-            System.out.println("JChatClient: Socket del client: " + socket);
+            // Create socket
+            Socket socket = new Socket(indirizzo, Server.PORT);
+            System.out.println("Client: Client socket: " + socket);
             
-            // creazione stream di input da socket
+            // Create input stream
             InputStreamReader isr = new InputStreamReader(socket.getInputStream());
             BufferedReader in = new BufferedReader(isr);
             
-            // creazione stream di output su socket
+            // Create output stream
             OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
             BufferedWriter bw = new BufferedWriter(osw);
             PrintWriter out = new PrintWriter(bw, true);
             ClientWriter cw = new ClientWriter(out);
             cw.start();
             
-            // ciclo di lettura da server e print della risposta
+            // Read from server and print answer
             while (true) {
-                
                 String readline = in.readLine();
                 System.out.println(readline);
-                if (readline.equals("JChatServer: Disconnessione...")) {
+
+                // Disconnect and close socket and stream
+                if (readline.equals("Server: Disconnecting...")) {
                     out.close();
                     bw.close();
                     osw.close();
@@ -45,16 +46,16 @@ public class JChatClient {
                 
             }
             
-        // Errore durante la connessione al server
+        // Error during connection to the server
         } catch (UnknownHostException e) {
-            System.out.println("JChatClient: Host sconosciuto, " + indirizzo);
-        // Errore di trasmissione
+            System.out.println("Client: Unknown host, " + indirizzo);
+        // Transmission error
         } catch (IOException e) {
-            System.out.println("JChatClient: Chiusura trasmissione...");
-        // Gestione eccezioni
+            System.out.println("Client: Closing transmission...");
+        // Exception handler
         } catch (Exception e) { 
             System.out.println(e);
         }
-        System.out.println("JChatClient: Connessione terminata, arrivederci");
+        System.out.println("Client: Connection ended, goodbye");
     }
 }

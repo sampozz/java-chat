@@ -11,12 +11,12 @@ public class ClientWriter extends Thread {
     @Override
     public void run() {
         
-        // creazione stream di input da tastiera
+        // Create input stream from keyboard
         BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
         String userInput;
         
         try {
-            // Attesa di lettura da tastiera ed invio al server
+            // Wait for input from keyboard
             while (true) {
                 userInput = stdIn.readLine();
                 out.println(userInput);
@@ -27,7 +27,7 @@ public class ClientWriter extends Thread {
             }             
         }
         
-        // Gestione eccezioni
+        // Exception handler
         catch (Exception e) {
             System.out.println(e);
         }
