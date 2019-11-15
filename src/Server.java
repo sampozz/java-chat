@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Server {
 
     public static final int PORT = 5000; // porta al di fuori del range 1-4096 !
-    public static ArrayList<Connection> sockets = new ArrayList<Connection>(0);
+    public static ArrayList<User> connectedUsers = new ArrayList<User>(0);
 
     public static void main(String[] args) throws IOException {
         
@@ -19,9 +19,9 @@ public class Server {
                 System.out.println("Server: Waiting for connection...");                
                 Socket client = serverSocket.accept();
                 
-                Connection connessione = new Connection(client);
-                connessione.start();   
-                sockets.add(connessione);
+                User user = new User(client);
+                user.start();   
+                connectedUsers.add(user);
                 
             } catch (IOException ex) {
                 System.out.println(ex);
