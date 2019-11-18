@@ -5,28 +5,21 @@ public class Client {
 
     public static void main(String[] args) throws IOException {
         
-        InetAddress indirizzo;
-        if (args.length == 0) {
-            indirizzo = InetAddress.getByName(null);
-        } else {
-            indirizzo = InetAddress.getByName(args[0]);
-        }
+        String serveAddress = "127.0.0.1";
         
         try {
             
             // Create socket
-            Socket socket = new Socket(indirizzo, Server.PORT);
+            Socket socket = new Socket(serveAddress, Server.PORT);
             System.out.println("Client: Client socket: " + socket);
             
             // Create input stream
-            InputStreamReader isr = new InputStreamReader(socket.getInputStream());
-            BufferedReader in = new BufferedReader(isr);
+            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             
             // Create output stream
-            OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
-            BufferedWriter bw = new BufferedWriter(osw);
-            PrintWriter out = new PrintWriter(bw, true);
-            ClientWriter cw = new ClientWriter(out);
+            ClientWriter cw = new ClientWriter(new PrintWriter(
+                    new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true
+                ));
             cw.start();
             
             // Read from server and print answer
@@ -36,11 +29,7 @@ public class Client {
 
                 // Disconnect and close socket and stream
                 if (readline.equals("Server: Disconnecting...")) {
-                    out.close();
-                    bw.close();
-                    osw.close();
                     in.close();
-                    isr.close();
                     socket.close();
                 }
                 
@@ -48,7 +37,7 @@ public class Client {
             
         // Error during connection to the server
         } catch (UnknownHostException e) {
-            System.out.println("Client: Unknown host, " + indirizzo);
+            System.out.println("Client: Unknown host, " + serveAddress);
         // Transmission error
         } catch (IOException e) {
             System.out.println("Client: Closing transmission...");
