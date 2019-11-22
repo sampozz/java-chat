@@ -65,15 +65,15 @@ public class Connection extends Thread {
                 }
 
                 // Set destination
-                if (str.contains("/dest")) {
+                if (str.split(" ")[0].equals("/dest")) {
                     // Search for destination user
-                    String destName = str.replace("/dest ", "");
-                    setDestination(destName.replace(" ", "").split(","));
+                    String dest = str.replace("/dest ", "").replace(" ", "");
+                    setDestination(dest.split(","));
                     continue;
                 }
 
                 // Reply to destination
-                for (PrintWriter p : destOut) {
+                for (PrintWriter p: destOut) {
                     if (p != null) {
                         p.println(getUser().getUsername() + ": " + str);
                     }
