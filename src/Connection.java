@@ -1,5 +1,6 @@
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class Connection extends Thread {
 
@@ -9,10 +10,11 @@ public class Connection extends Thread {
     private InputStreamReader isr;
     private BufferedReader in;
     private PrintWriter out;
-    private PrintWriter destOut;
+    private ArrayList<PrintWriter> destOut;
 
     public Connection(Socket socket) {
         this.clientSocket = socket;
+        this.destOut = new ArrayList<PrintWriter>();
     }
 
     @Override
@@ -40,10 +42,10 @@ public class Connection extends Thread {
             } while(!user.login(username, "justastupidpassword"));
 
             out.println("Server: Hi " + user.getUsername() + "!\n"
-                + "/dest <username>   # start chatting\n"
-                + "/dest broadcast    # send to everyone\n"
-                + "/list              # view connected users\n"
-                + "/quit              # diconnect");
+                + "/dest <username>     # start chatting\n"
+                + "/dest <usr1>, <usr2> # chat with multiple users\n"
+                + "/list                # view connected users\n"
+                + "/quit                # diconnect");
 
             // Message receive and redirect
             while (true) {
@@ -65,34 +67,34 @@ public class Connection extends Thread {
                 // Set destination
                 if (str.contains("/dest")) {
                     // Search for destination user
-                    String destName = str.split(" ")[1];
-                    if (setDestination(destName)) {
-                        out.println("Server: Connection with " + destName + " established, enjoy your chat!");
-                    } else {
-                        out.println("Server: Destination username not found!");
-                    }
+                    String destName = str.replace("/dest ", "");
+                    setDestination(destName.replace(" ", "").split(","));
+                    continue;
                 }
 
                 // Reply to destination
-                if (destOut != null) {
-                    destOut.println(getUser().getUsername() + ": " + str);
+                for (PrintWriter p : destOut) {
+                    if (p != null) {
+                        p.println(getUser().getUsername() + ": " + str);
+                    }
                 }
+                
             }
         } catch (IOException e) { }
     }
 
-    private boolean setDestination(String destName) throws IOException {
-        if (Server.isConnected(destName)) {
-            destOut = new PrintWriter(new BufferedWriter(
-                    new OutputStreamWriter(Server.getConnection(destName).getClientSocket().getOutputStream())
-                ), true);
-        } else if (destName.equals("broadcast")) {
-            // Send broadcast messages
-            
-        } else {
-            return false;
+    private void setDestination(String[] dest) throws IOException {
+        destOut.clear();
+        for (String destName: dest) {
+            if (Server.isConnected(destName)) {
+                destOut.add(new PrintWriter(new BufferedWriter(
+                        new OutputStreamWriter(Server.getConnection(destName).getClientSocket().getOutputStream())
+                    ), true));
+                out.println("Server: Connection with " + destName + " established, enjoy your chat!");
+            } else {
+                out.println("Server: Cannot connect to " + destName + ", user is not connected");
+            }
         }
-        return true;
     }
 
     /**
