@@ -32,15 +32,53 @@ public class Connection extends Thread {
                     new OutputStreamWriter(getClientSocket().getOutputStream())
                 ), true);
 
-            // Save username
-            out.println("Server: Welcome!");
-            String username;
+            // Login or register
+            String selection = "";
             do {
-                out.println("Server: Insert a username: ");
-                username = in.readLine();
-                user = new User();
-            } while(!user.login(username, "justastupidpassword"));
-
+                out.println("Server: Welcome!\n"
+                    + "[1] Login\n"
+                    + "[2] Register\n"
+                    + "Select an option: ");
+                selection = in.readLine();
+            } while (!(selection.equals("1") || selection.equals("2")));
+            
+            if (selection.equals("1")) {
+                // Login
+                String username;
+                String password;
+                while (true) {
+                    out.println("Server: Insert your username: ");
+                    username = in.readLine();
+                    out.println("Server: Insert your password: ");
+                    password = in.readLine();
+                    user = new User();
+                    if (user.login(username, password)) {
+                        break;
+                    }
+                    out.println("Server: Incorrect username or password");
+                }
+            } else {
+                // Register
+                String username;
+                String password;
+                while (true) {
+                    out.println("Server: Insert your username: ");
+                    username = in.readLine();
+                    out.println("Server: Insert your password: ");
+                    password = in.readLine();
+                    user = new User();
+                    int retCode = user.register(username, password);
+                    if (retCode == 0) {
+                        out.println("Server: Registration completed!");
+                        break;
+                    } else if (retCode == 1) {
+                        out.println("Server: Username already used");
+                    } else {
+                        out.println("Server: An error occured, try again later");
+                    }
+                }
+            }
+            
             out.println("Server: Hi " + user.getUsername() + "!\n"
                 + "/dest <username>     # start chatting\n"
                 + "/dest <usr1>, <usr2> # chat with multiple users\n"
