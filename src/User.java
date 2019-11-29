@@ -40,9 +40,9 @@ public class User {
     /**
      * Register an user
      * Return code descriptions:
-     *  0 -> Registration successful
-     *  1 -> Username already used
-     *  2 -> Password encryption error
+     *  0 - Registration successful
+     *  1 - Username already used
+     *  2 - Password encryption error
      * @param username
      * @param passwd
      * @return
