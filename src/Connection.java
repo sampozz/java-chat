@@ -2,14 +2,20 @@ import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 
+/**
+ * Every connection to the server is identified by the socket and 
+ * the connected user
+ * @author sam
+ */
 public class Connection extends Thread {
 
-    private Socket clientSocket;
+    private final Socket clientSocket;
     private User user;
 
     private InputStreamReader isr;
     private BufferedReader in;
     private PrintWriter out;
+    // destOut is an array to allow multiple destinations
     private ArrayList<PrintWriter> destOut;
 
     public Connection(Socket socket) {
@@ -20,7 +26,8 @@ public class Connection extends Thread {
     @Override
     public void run() {
         try {
-            System.out.println("Server: Client connected - " + getClientSocket().getInetAddress() + ", "
+            System.out.println("Server: Client connected - " 
+                    + getClientSocket().getInetAddress() + ", "
                     + getClientSocket().getPort());
 
             // Create input stream from client socket
@@ -79,6 +86,7 @@ public class Connection extends Thread {
                 }
             }
             
+            // Connection established
             out.println("Server: Hi " + user.getUsername() + "!\n"
                 + "/dest <username>     # start chatting\n"
                 + "/dest <usr1>, <usr2> # chat with multiple users\n"
@@ -121,7 +129,13 @@ public class Connection extends Thread {
         } catch (IOException e) { }
     }
 
+    /**
+     * Update destOut with new destination(s)
+     * @param dest
+     * @throws IOException 
+     */
     private void setDestination(String[] dest) throws IOException {
+        // Clear old destinations
         destOut.clear();
         for (String destName: dest) {
             if (Server.isConnected(destName)) {

@@ -1,5 +1,10 @@
 import java.io.*;
 
+/**
+ * This thread allows user input while the client is receiving 
+ * data from the server
+ * @author sam
+ */
 public class ClientWriter extends Thread {
     
     PrintWriter out;

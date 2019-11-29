@@ -1,6 +1,12 @@
 import java.net.*;
 import java.io.*;
 
+/**
+ * This is the client of the application
+ * This client can be distributed to every user
+ * It can connect to the server to start the chat
+ * @author sam
+ */
 public class Client {
 
     public static void main(String[] args) throws IOException {
