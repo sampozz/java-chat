@@ -11,12 +11,12 @@ public class Client {
 
     public static void main(String[] args) throws IOException {
         
-        String serveAddress = "127.0.0.1";
+        String serverAddress = "127.0.0.1";
         
         try {
             
             // Create socket
-            Socket socket = new Socket(serveAddress, Server.PORT);
+            Socket socket = new Socket(serverAddress, 5000);
             System.out.println("Client: Client socket: " + socket);
             
             // Create input stream
@@ -43,7 +43,7 @@ public class Client {
             
         // Error during connection to the server
         } catch (UnknownHostException e) {
-            System.out.println("Client: Unknown host, " + serveAddress);
+            System.out.println("Client: Unknown host, " + serverAddress);
         // Transmission error
         } catch (IOException e) {
             System.out.println("Client: Closing transmission...");

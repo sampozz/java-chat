@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class Server {
 
     public static final int PORT = 5000; // porta al di fuori del range 1-4096 !
-    public static ArrayList<Connection> connections = new ArrayList<Connection>(0);
+    public static ArrayList<SocketConnection> connections = new ArrayList<SocketConnection>(0);
 
     /**
      * Run me!
@@ -30,7 +30,7 @@ public class Server {
                 Socket client = serverSocket.accept();
                 
                 // A client asked for connection
-                Connection connection = new Connection(client);
+                SocketConnection connection = new SocketConnection(client);
                 connection.start();
                 // Add connection to the array
                 connections.add(connection);
@@ -63,7 +63,7 @@ public class Server {
      * @return 
      */
     static Boolean isConnected(String username) {
-        for (Connection c : connections) {
+        for (SocketConnection c : connections) {
             if (c.getUser() != null) {
                 if (c.getUser().getUsername().equals(username)) {
                     return true;
@@ -78,8 +78,8 @@ public class Server {
      * @param username
      * @return 
      */
-    static Connection getConnection(String username) {
-        for (Connection c : connections) {
+    static SocketConnection getConnection(String username) {
+        for (SocketConnection c : connections) {
             if (c.getUser() != null) {
                 if (c.getUser().getUsername().equals(username)) {
                     return c;

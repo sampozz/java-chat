@@ -25,3 +25,7 @@ hs_err_pid*
 # VSCode
 .vscode/
 /dist/
+
+build/
+manifest.mf
+nbproject/

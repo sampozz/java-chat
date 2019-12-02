@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * the connected user
  * @author sam
  */
-public class Connection extends Thread {
+public class SocketConnection extends Thread {
 
     private final Socket clientSocket;
     private User user;
@@ -18,7 +18,7 @@ public class Connection extends Thread {
     // destOut is an array to allow multiple destinations
     private ArrayList<PrintWriter> destOut;
 
-    public Connection(Socket socket) {
+    public SocketConnection(Socket socket) {
         this.clientSocket = socket;
         this.destOut = new ArrayList<PrintWriter>();
     }
