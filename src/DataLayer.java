@@ -4,8 +4,12 @@ import java.sql.*;
  * Connect to db
  */
 public class DataLayer {
+    
+    private java.sql.Connection dbConnection;
 
-    public DataLayer() { }
+    public DataLayer() {
+        dbConnection = connect();
+    }
 
     /**
      * Register an user
@@ -16,13 +20,13 @@ public class DataLayer {
      */
     public boolean registerUser(String username, String passwd) {
         try {
-            Statement stm = connect().createStatement();
+            Statement stm = dbConnection.createStatement();
             // Insert to User table
-            stm.executeQuery("INSERT INTO User (Username, Passwd) VALUES ('"
-                + username + "', '" +passwd + "')");
+            stm.executeUpdate("INSERT INTO User (Username, Passwd) VALUES ('"
+                + username + "', '" + passwd + "')");
             return true;
         } catch (SQLException ex) { 
-            System.out.println(ex);
+            System.out.println(ex+ "HAY");
         }
         return false;
     }
@@ -35,7 +39,7 @@ public class DataLayer {
      */
     public boolean loginUser(String username, String passwd) {
         try {
-            Statement stm = connect().createStatement();
+            Statement stm = dbConnection.createStatement();
             ResultSet rs = stm.executeQuery("SELECT * FROM User");
             while (rs.next()) {
                 if (rs.getString(1).equals(username)) {
@@ -58,7 +62,7 @@ public class DataLayer {
      */
     public boolean userExist(String username) {
         try {
-            Statement stm = connect().createStatement();
+            Statement stm = dbConnection.createStatement();
             // Return every user
             ResultSet rs = stm.executeQuery("SELECT * FROM User");
             while (rs.next()) {
@@ -78,10 +82,9 @@ public class DataLayer {
      */
     public java.sql.Connection connect() {
         try {
-            Class.forName("org.mariadb.jdbc.Driver");
-            // You shouldn't see this
+            Class.forName("org.sqlite.JDBC");
             return DriverManager.getConnection(
-                "jdbc:mariadb://10.0.0.3:3306/javachat", "dbiusr", "dbiusr"
+                "jdbc:sqlite:db/javachat.db"
             );
         } catch (Exception e) {
             System.out.println(e);
