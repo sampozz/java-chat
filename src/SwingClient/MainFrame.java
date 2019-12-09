@@ -1,13 +1,8 @@
 package SwingClient;
 
+import java.awt.Color;
 import java.util.Observable;
 import java.util.Observer;
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 /**
  *
@@ -21,12 +16,15 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
      * Creates new form MainFrame
      */
     public MainFrame() {
+        
         initComponents();
+        
         jLabel1.setText("<html>");
         client = new Client();
         client.addObserver(this);
         Thread t = new Thread(client);
         t.start();
+        
     }
 
     /**
@@ -45,7 +43,16 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(255, 255, 255));
 
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setForeground(new java.awt.Color(255, 255, 255));
+
+        msgField.setBackground(new java.awt.Color(230, 230, 230));
+        msgField.setForeground(new java.awt.Color(150, 150, 150));
+        msgField.setToolTipText("Write a message...");
+        msgField.setBorder(null);
+        msgField.setMargin(new java.awt.Insets(0, 50, 0, 0));
         msgField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 msgFieldKeyPressed(evt);
@@ -59,7 +66,16 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
             }
         });
 
+        mainPane.setBorder(null);
+        mainPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        mainPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        mainPane.setAutoscrolls(true);
+        mainPane.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        jLabel1.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel1.setForeground(new java.awt.Color(100, 100, 100));
         jLabel1.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        jLabel1.setOpaque(true);
         mainPane.setViewportView(jLabel1);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -69,12 +85,12 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(mainPane)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(msgField, javax.swing.GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(sendButton)))
-                .addContainerGap())
+                        .addComponent(sendButton)
+                        .addContainerGap())
+                    .addComponent(mainPane, javax.swing.GroupLayout.Alignment.TRAILING)))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -103,17 +119,12 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
     }// </editor-fold>//GEN-END:initComponents
 
     private void sendButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendButtonActionPerformed
-        // TODO add your handling code here:
-        client.getPw().println(msgField.getText());
-        jLabel1.setText(jLabel1.getText() + "<br>" + msgField.getText());
-        msgField.setText("");
+        sendMsg();
     }//GEN-LAST:event_sendButtonActionPerformed
 
     private void msgFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_msgFieldKeyPressed
         if (evt.getKeyCode() == 10) {
-            client.getPw().println(msgField.getText());
-            jLabel1.setText(jLabel1.getText() + "<br>" + msgField.getText());
-            msgField.setText("");
+            sendMsg();
         }
     }//GEN-LAST:event_msgFieldKeyPressed
     
@@ -163,5 +174,11 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         jLabel1.setText(jLabel1.getText() + "<br>" + client.getMsg());
+    }
+    
+    public void sendMsg() {
+        client.getPw().println(msgField.getText());
+        jLabel1.setText(jLabel1.getText() + "<br>" + msgField.getText());
+        msgField.setText("");
     }
 }

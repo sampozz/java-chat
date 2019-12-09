@@ -1,6 +1,5 @@
 package Server;
 
-import Server.DataLayer;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -23,21 +22,20 @@ public class User {
      */
     public boolean login(String username, String passwd) {
         DataLayer repo = new DataLayer();
+        boolean ret = false;
         if (!repo.userExist(username)) {
             // Cannot login if user doesn't exist
-            return false;
-        }
-        // Hashed password is needed for login
-        passwd = hashIt(passwd);
-        if (repo.loginUser(username, passwd)) {
-            // Login successful
-            this.username = username;
-            return true;
         } else {
-            // Nope
-            return false;
+            // Hashed password is needed for login
+            passwd = hashIt(passwd);
+            if (repo.loginUser(username, passwd)) {
+                // Login successful
+                this.username = username;
+                ret = true;
+            }
         }
-        
+        repo.closeConnection();
+        return ret;
     }
 
     /**
@@ -52,19 +50,22 @@ public class User {
      */
     public int register(String username, String passwd) {
         DataLayer repo = new DataLayer();
-        if (repo.userExist(username)) {
-            // Cannot register an existing user
-            return 1;
+        int ret = 1;
+        // Cannot register an existing user
+        if (!repo.userExist(username)) {
+            // Hashed passord is needed for registration
+            passwd = hashIt(passwd);
+            if (repo.registerUser(username, passwd)) {
+                // Registration successful
+                this.username = username;
+                ret = 0;
+            } else {
+                // Nope
+                ret = 2;
+            }
         }
-        // Hashed passord is needed for registration
-        passwd = hashIt(passwd);
-        if (repo.registerUser(username, passwd)) {
-            // Registration successful
-            this.username = username;
-            return 0;
-        }
-        // Nope
-        return 2;
+        repo.closeConnection();
+        return ret;
     }
     
     /**

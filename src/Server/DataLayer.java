@@ -9,8 +9,8 @@ public class DataLayer {
     
     private java.sql.Connection dbConnection;
 
-    public DataLayer() {
-        dbConnection = connect();
+    public DataLayer() { 
+        connect();
     }
 
     /**
@@ -82,15 +82,25 @@ public class DataLayer {
      * Connect to the database
      * @return 
      */
-    public java.sql.Connection connect() {
+    public void connect() {
         try {
             Class.forName("org.sqlite.JDBC");
-            return DriverManager.getConnection(
+            dbConnection = DriverManager.getConnection(
                 "jdbc:sqlite:db/javachat.db"
             );
-        } catch (Exception e) {
+        } catch (ClassNotFoundException | SQLException e) {
             System.out.println(e);
-            return null;
+        }
+    }
+    
+    /**
+     * Release connection !! IMPORTANT !!
+     */
+    public void closeConnection() {
+        try {
+            dbConnection.close();
+        } catch (SQLException e) {
+            System.out.println(e);
         }
     }
 
