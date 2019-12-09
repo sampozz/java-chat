@@ -1,3 +1,5 @@
+package ConsoleClient;
+
 import java.io.*;
 
 /**
@@ -5,11 +7,11 @@ import java.io.*;
  * data from the server
  * @author sam
  */
-public class ClientWriter extends Thread {
+public class ConsoleWriter extends Thread {
     
     PrintWriter out;
     
-    public ClientWriter(PrintWriter out) {    
+    public ConsoleWriter(PrintWriter out) {    
         this.out = out;
     }
     

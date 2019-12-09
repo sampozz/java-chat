@@ -1,3 +1,5 @@
+package ConsoleClient;
+
 import java.net.*;
 import java.io.*;
 
@@ -7,7 +9,7 @@ import java.io.*;
  * It can connect to the server to start the chat
  * @author sam
  */
-public class Client {
+public class ConsoleClient {
 
     public static void main(String[] args) throws IOException {
         
@@ -23,7 +25,7 @@ public class Client {
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             
             // Create output stream
-            ClientWriter cw = new ClientWriter(new PrintWriter(
+            ConsoleWriter cw = new ConsoleWriter(new PrintWriter(
                     new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true
                 ));
             cw.start();

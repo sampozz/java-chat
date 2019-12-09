@@ -1,3 +1,6 @@
+package Server;
+
+import Server.Server;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
