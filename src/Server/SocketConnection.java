@@ -207,7 +207,7 @@ public class SocketConnection extends Thread {
             return "0x220";
         }
         // successful
-        return "0x102";
+        return "0x103";
     }
     
     /**

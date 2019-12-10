@@ -6,6 +6,7 @@
     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
       <Color blue="ff" green="ff" red="ff" type="rgb"/>
     </Property>
+    <Property name="resizable" type="boolean" value="false"/>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
@@ -49,16 +50,21 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="msgField" pref="231" max="32767" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="sendButton" min="-2" max="-2" attributes="0"/>
+                      <Component id="mainPane" alignment="1" max="32767" attributes="0"/>
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="jLabel2" max="32767" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="msgField" pref="253" max="32767" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="sendButton" min="-2" pref="54" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
-                      <Component id="mainPane" alignment="1" max="32767" attributes="0"/>
                   </Group>
               </Group>
           </Group>
@@ -66,12 +72,14 @@
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace min="-2" pref="56" max="-2" attributes="0"/>
-                  <Component id="mainPane" pref="372" max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="jLabel2" min="-2" pref="44" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="mainPane" pref="409" max="32767" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="msgField" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
-                      <Component id="sendButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Component id="msgField" pref="36" max="32767" attributes="0"/>
+                      <Component id="sendButton" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -94,6 +102,7 @@
             <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
               <Insets value="[0, 50, 0, 0]"/>
             </Property>
+            <Property name="opaque" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="msgFieldKeyPressed"/>
@@ -101,7 +110,19 @@
         </Component>
         <Component class="javax.swing.JButton" name="sendButton">
           <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="cc" green="66" red="0" type="rgb"/>
+            </Property>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Dialog" size="15" style="0"/>
+            </Property>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="ff" green="ff" red="ff" type="rgb"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Send"/>
+            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+              <Border info="null"/>
+            </Property>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="sendButtonActionPerformed"/>
@@ -113,7 +134,6 @@
               <Border info="null"/>
             </Property>
             <Property name="horizontalScrollBarPolicy" type="int" value="31"/>
-            <Property name="verticalScrollBarPolicy" type="int" value="22"/>
             <Property name="autoscrolls" type="boolean" value="true"/>
             <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
               <Color id="Default Cursor"/>
@@ -139,6 +159,14 @@
             </Component>
           </SubComponents>
         </Container>
+        <Component class="javax.swing.JLabel" name="jLabel2">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Dialog" size="24" style="1"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Java chat"/>
+          </Properties>
+        </Component>
       </SubComponents>
     </Container>
   </SubComponents>

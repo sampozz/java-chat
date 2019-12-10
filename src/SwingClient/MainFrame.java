@@ -41,9 +41,11 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
         sendButton = new javax.swing.JButton();
         mainPane = new javax.swing.JScrollPane();
         jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
+        setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -53,13 +55,18 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
         msgField.setToolTipText("Write a message...");
         msgField.setBorder(null);
         msgField.setMargin(new java.awt.Insets(0, 50, 0, 0));
+        msgField.setOpaque(false);
         msgField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 msgFieldKeyPressed(evt);
             }
         });
 
+        sendButton.setBackground(new java.awt.Color(0, 102, 204));
+        sendButton.setFont(new java.awt.Font("Dialog", 0, 15)); // NOI18N
+        sendButton.setForeground(new java.awt.Color(255, 255, 255));
         sendButton.setText("Send");
+        sendButton.setBorder(null);
         sendButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 sendButtonActionPerformed(evt);
@@ -68,7 +75,6 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
 
         mainPane.setBorder(null);
         mainPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        mainPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         mainPane.setAutoscrolls(true);
         mainPane.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
@@ -79,6 +85,9 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
         jLabel1.setOpaque(true);
         mainPane.setViewportView(jLabel1);
 
+        jLabel2.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
+        jLabel2.setText("Java chat");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -86,22 +95,27 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(mainPane, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(msgField, javax.swing.GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(sendButton)
-                        .addContainerGap())
-                    .addComponent(mainPane, javax.swing.GroupLayout.Alignment.TRAILING)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(msgField, javax.swing.GroupLayout.DEFAULT_SIZE, 253, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(sendButton, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap())))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(56, 56, 56)
-                .addComponent(mainPane, javax.swing.GroupLayout.DEFAULT_SIZE, 372, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(mainPane, javax.swing.GroupLayout.DEFAULT_SIZE, 409, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(msgField, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(sendButton))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(msgField, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
+                    .addComponent(sendButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -166,6 +180,7 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane mainPane;
     private javax.swing.JTextField msgField;
