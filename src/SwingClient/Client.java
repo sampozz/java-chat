@@ -33,7 +33,8 @@ public class Client extends Observable implements Runnable {
             
             // Read from server and print answer
             while (true) {
-                setMsg(in.readLine());
+                String readline = in.readLine().replace(" ", "&nbsp;");
+                setMsg(readline);
 
                 // Disconnect and close socket and stream
                 if (msg.equals("Server: Disconnecting...")) {

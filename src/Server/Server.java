@@ -3,6 +3,7 @@ package Server;
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * This is the server of the application
@@ -13,6 +14,7 @@ public class Server {
 
     public static final int PORT = 5000; // porta al di fuori del range 1-4096 !
     public static ArrayList<SocketConnection> connections = new ArrayList<SocketConnection>(0);
+    public static HashMap<String, String> codes = new HashMap<String, String>();
 
     /**
      * Run me!
@@ -24,7 +26,8 @@ public class Server {
         ServerSocket serverSocket = new ServerSocket(PORT);
         
         System.out.println("Server: Up and running");
-        System.out.println("Server: Server socket " + serverSocket);            
+        System.out.println("Server: Server socket " + serverSocket);
+        initializeCodes();
             
         while(true) {
             try {
@@ -47,12 +50,12 @@ public class Server {
 
     /**
      * Terminates the connection of an user
-     * @param username 
+     * @param clientSocket 
      */
-    static void endConnection(String username) {
+    static void endConnection(Socket clientSocket) {
         for (int i = 0; i < Server.connections.size(); i++) {
-            if (Server.connections.get(i).getUser() != null) {
-                if (Server.connections.get(i).getUser().getUsername().equals(username)) {
+            if (Server.connections.get(i).getClientSocket() != null) {
+                if (Server.connections.get(i).getClientSocket().equals(clientSocket)) {
                     Server.connections.remove(i);
                 }
             }
@@ -89,5 +92,26 @@ public class Server {
             }
         }
         return null;
+    }
+    
+    static void initializeCodes() {
+        if (!codes.isEmpty())
+            return;
+        codes.put("0x000", "Chat message");
+        codes.put("0x100", "Connected");
+        codes.put("0x101", "Logged in");
+        codes.put("0x102", "Signed up");
+        codes.put("0x103", "Connected to destination");
+        codes.put("0x1FF", "Disconnect");
+        codes.put("0x200", "User doesn't exist");
+        codes.put("0x201", "Incorrect username or password");
+        codes.put("0x202", "Login syntax error, specify username and password");
+        codes.put("0x210", "User already exists");
+        codes.put("0x211", "Register syntax error, specify username and password");
+        codes.put("0x220", "Destination user not found");
+        codes.put("0x221", "Destination syntax error, specify destination");
+        codes.put("0x230", "User not authenticated");
+        codes.put("0x231", "User already authenticated");
+        codes.put("0x2FF", "An error occured, try again later");
     }
 }

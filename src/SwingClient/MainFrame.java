@@ -73,6 +73,7 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
         mainPane.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         jLabel1.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel1.setFont(new java.awt.Font("Consolas", 1, 12)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(100, 100, 100));
         jLabel1.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         jLabel1.setOpaque(true);

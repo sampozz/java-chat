@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class SocketConnection extends Thread {
 
     private final Socket clientSocket;
-    private User user;
+    private User user = null;
 
     private InputStreamReader isr;
     private BufferedReader in;
@@ -40,83 +40,26 @@ public class SocketConnection extends Thread {
             out = new PrintWriter(new BufferedWriter(
                     new OutputStreamWriter(getClientSocket().getOutputStream())
                 ), true);
-
-            // Login or register
-            String selection = "";
-            do {
-                out.println("Server: Welcome!\n"
-                    + "[1] Login\n"
-                    + "[2] Register\n"
-                    + "Select an option: ");
-                selection = in.readLine();
-            } while (!(selection.equals("1") || selection.equals("2")));
             
-            if (selection.equals("1")) {
-                // Login
-                String username;
-                String password;
-                while (true) {
-                    out.println("Server: Insert your username: ");
-                    username = in.readLine();
-                    out.println("Server: Insert your password: ");
-                    password = in.readLine();
-                    user = new User();
-                    if (user.login(username, password)) {
-                        break;
-                    }
-                    out.println("Server: Incorrect username or password");
-                }
-            } else {
-                // Register
-                String username;
-                String password;
-                while (true) {
-                    out.println("Server: Insert your username: ");
-                    username = in.readLine();
-                    out.println("Server: Insert your password: ");
-                    password = in.readLine();
-                    user = new User();
-                    int retCode = user.register(username, password);
-                    if (retCode == 0) {
-                        out.println("Server: Registration completed!");
-                        break;
-                    } else if (retCode == 1) {
-                        out.println("Server: Username already used");
-                    } else {
-                        out.println("Server: An error occured, try again later");
-                    }
-                }
-            }
-            
-            // Connection established
-            out.println("Server: Hi " + user.getUsername() + "!\n"
-                + "/dest <username>     # start chatting\n"
-                + "/dest <usr1>, <usr2> # chat with multiple users\n"
-                + "/list                # view connected users\n"
-                + "/quit                # diconnect");
+            out.println("0x100 " + Server.codes.get("0x100"));
+            out.println(getHelp());
 
             // Message receive and redirect
             while (true) {
 
                 // Wait for input from client
                 String str = in.readLine();
-
-                // End of transmission, closing socket
-                if (str.equals("/quit")) {
-                    Server.endConnection(getUser().getUsername());
-                    out.println("Server: Disconnecting...");
-                    // Closing stream and socket
-                    out.close();
-                    in.close();
-                    getClientSocket().close();
-                    break;
+                
+                // Execute command
+                if (str.charAt(0) == '/') {
+                    String retCode = runCommand(str);
+                    out.println(retCode + " " + Server.codes.get(retCode));
+                    continue;
                 }
-
-                // Set destination
-                if (str.split(" ")[0].equals("/dest")) {
-                    // Search for destination user
-                    String dest = str.replace("/dest ", "").replace(" ", "");
-                    setDestination(dest.split(","));
+                
+                // User not authenticated
+                if (user == null) {
+                    out.println("0x230 " + Server.codes.get("0x230"));
                     continue;
                 }
 
@@ -130,25 +73,155 @@ public class SocketConnection extends Thread {
             }
         } catch (IOException e) { }
     }
-
+    
+    /**
+     * Return command code:
+     * 1 - Quit
+     * 2 - Set Destination
+     * 3 - List connected users
+     * 4 - Login
+     * 5 - Register
+     * 42 - Help
+     * @param msg
+     * @return 
+     */
+    private String runCommand(String msg) throws IOException {
+        String[] parse = msg.split(" ");
+        if (parse[0].equals("/quit"))
+            return cmdQuit();
+        if (parse[0].equals("/dest"))
+            return cmdDest(msg);
+        if (parse[0].equals("/list"))
+            return "";
+        if (parse[0].equals("/login"))
+            return cmdLogin(msg);
+        if (parse[0].equals("/register"))
+            return cmdRegister(msg);
+        return getHelp();
+    }
+    
+    private String getHelp() {
+        return "Commands:\n"
+                + "/dest username       # start chatting\n"
+                + "/dest usr1, usr2     # chat with multiple users\n"
+                + "/list                # view connected users\n"
+                + "/login user, pwd     # login\n"
+                + "/register user, pwd  # register\n"
+                + "/quit                # diconnect\n"
+                + "/help                # get help";
+    }
+    
+    /**
+     * Register user
+     * @param param
+     * @return 
+     */
+    private String cmdRegister(String param) {
+        if (user != null) {
+            // already authenticated
+            return "0x231";
+        }
+        if (!param.contains(",")) {
+            // invalid syntax
+            return "0x211";
+        }
+        String[] parse = param.replace("/register", ""). replace(" ", "").split(",");
+        if (parse.length != 2) {
+            // invalid syntax
+            return "0x211";
+        }
+        user = new User();
+        int retCode = user.register(parse[0], parse[1]);
+        if (retCode == 0) {
+            // signup completed
+            return "0x102";
+        }
+        user = null;
+        if (retCode == 1) {
+            // user already exist
+            return "0x210";
+        }
+        // unknown error
+        return "0x2FF"; 
+    }
+    
+    /**
+     * Login user
+     * @param param
+     * @return 
+     */
+    private String cmdLogin(String param) {
+        if (user != null) {
+            // already authenticated
+            return "0x231";
+        }
+        if (!param.contains(",")) {
+            // syntax error
+            return "0x202";
+        }
+        String[] parse = param.replace("/login", ""). replace(" ", "").split(",");
+        if (parse.length != 2) {
+            // syntax error
+            return "0x202";
+        }
+        user = new User();
+        if (user.login(parse[0], parse[1])) {
+            // successful
+            return "0x101";
+        }
+        user = null;
+        // incorrect username or password
+        return "0x201";
+    }
+    
     /**
      * Update destOut with new destination(s)
-     * @param dest
+     * @param param
+     * @return
      * @throws IOException 
      */
-    private void setDestination(String[] dest) throws IOException {
+    private String cmdDest(String param) throws IOException {
+        // User not authenticated
+        if (user == null) {
+            return "0x230";
+        }
+        String[] dest = param.replace("/dest ", "").replace(" ", "").split(",");
+        // Validate Command
+        if (dest[0].equals("")) {
+            return "0x221";
+        }
         // Clear old destinations
         destOut.clear();
+        String dests = "";
         for (String destName: dest) {
+            // Search for destination user
             if (Server.isConnected(destName)) {
                 destOut.add(new PrintWriter(new BufferedWriter(
                         new OutputStreamWriter(Server.getConnection(destName).getClientSocket().getOutputStream())
                     ), true));
-                out.println("Server: Connection with " + destName + " established, enjoy your chat!");
-            } else {
-                out.println("Server: Cannot connect to " + destName + ", user is not connected");
+                dests += destName + ", ";
             }
         }
+        if (dests.equals("")) {
+            // user not found
+            return "0x220";
+        }
+        // successful
+        return "0x102";
+    }
+    
+    /**
+     * End of transmission, closing socket
+     * @return 
+     */
+    private String cmdQuit() throws IOException {
+        Server.endConnection(getClientSocket());
+        // Closing stream and socket
+        out.close();
+        in.close();
+        getClientSocket().close();
+        // Disconnect
+        return "0x1FF";
     }
 
     /**
