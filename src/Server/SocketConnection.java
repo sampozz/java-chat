@@ -66,7 +66,7 @@ public class SocketConnection extends Thread {
                 // Reply to destination
                 for (PrintWriter p: destOut) {
                     if (p != null) {
-                        p.println(getUser().getUsername() + ": " + str);
+                        p.println("0x000 " + getUser().getUsername() + ": " + str);
                     }
                 }
                 
@@ -101,7 +101,7 @@ public class SocketConnection extends Thread {
     }
     
     private String getHelp() {
-        return "Commands:\n"
+        return "0x104 Commands:\n"
                 + "/dest username       # start chatting\n"
                 + "/dest usr1, usr2     # chat with multiple users\n"
                 + "/list                # view connected users\n"

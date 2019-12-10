@@ -3,6 +3,7 @@
 0x101 -> Logged in
 0x102 -> Signed up
 0x103 -> Connected to destination
+0x104 -> Help
 0x1FF -> Disconnect
 0x200 -> User doesn't exist
 0x201 -> Incorrect username or password

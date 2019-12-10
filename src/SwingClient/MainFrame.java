@@ -19,7 +19,7 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
         
         initComponents();
         
-        jLabel1.setText("<html>");
+        jLabel1.setText("<html>" + jLabel1.getText());
         client = new Client();
         client.addObserver(this);
         Thread t = new Thread(client);
@@ -81,6 +81,7 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
         jLabel1.setBackground(new java.awt.Color(255, 255, 255));
         jLabel1.setFont(new java.awt.Font("Consolas", 1, 12)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(100, 100, 100));
+        jLabel1.setText("____________________________________________");
         jLabel1.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         jLabel1.setOpaque(true);
         mainPane.setViewportView(jLabel1);
@@ -95,7 +96,7 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(mainPane, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(mainPane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -194,7 +195,7 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
     
     public void sendMsg() {
         client.getPw().println(msgField.getText());
-        jLabel1.setText(jLabel1.getText() + "<br>" + msgField.getText());
+        jLabel1.setText(jLabel1.getText() + "<br><div align=\"right\">" + msgField.getText() + "</div>");
         msgField.setText("");
     }
 }

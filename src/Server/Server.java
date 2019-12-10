@@ -102,6 +102,7 @@ public class Server {
         codes.put("0x101", "Logged in");
         codes.put("0x102", "Signed up");
         codes.put("0x103", "Connected to destination");
+        codes.put("0x104", "Help");
         codes.put("0x1FF", "Disconnect");
         codes.put("0x200", "User doesn't exist");
         codes.put("0x201", "Incorrect username or password");
