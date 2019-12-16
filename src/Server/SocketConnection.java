@@ -49,6 +49,7 @@ public class SocketConnection extends Thread {
 
                 // Wait for input from client
                 String str = in.readLine();
+                //System.out.println(str);
                 
                 // Null string
                 if (str.equals("")) {

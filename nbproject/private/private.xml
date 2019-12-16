@@ -3,9 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Samuele/Google%20Drive/git/java-chat/src/SwingClient/MainPanel.java</file>
-            <file>file:/C:/Users/Samuele/Google%20Drive/git/java-chat/src/SwingClient/WelcomePanel.java</file>
-            <file>file:/C:/Users/Samuele/Google%20Drive/git/java-chat/src/SwingClient/MainFrame.java</file>
+            <file>file:/D:/git/java-chat/src/SwingClient/ChatPanel.java</file>
+            <file>file:/D:/git/java-chat/src/SwingClient/WelcomePanel.java</file>
+            <file>file:/D:/git/java-chat/src/SwingClient/MainFrame.java</file>
+            <file>file:/D:/git/java-chat/src/SwingClient/Client.java</file>
         </group>
     </open-files>
 </project-private>
