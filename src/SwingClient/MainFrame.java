@@ -59,11 +59,6 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
         msgField.setToolTipText("Write a message...");
         msgField.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 6, 1, 1));
         msgField.setMargin(new java.awt.Insets(0, 50, 0, 0));
-        msgField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                msgFieldActionPerformed(evt);
-            }
-        });
         msgField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 msgFieldKeyPressed(evt);
@@ -145,23 +140,19 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        client.getPw().println("/quit");
+    }//GEN-LAST:event_formWindowClosing
+
+    private void sendButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendButtonActionPerformed
+        sendMsg();
+    }//GEN-LAST:event_sendButtonActionPerformed
+
     private void msgFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_msgFieldKeyPressed
         if (evt.getKeyCode() == 10) {
             sendMsg();
         }
     }//GEN-LAST:event_msgFieldKeyPressed
-
-    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        client.getPw().println("/quit");
-    }//GEN-LAST:event_formWindowClosing
-
-    private void msgFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_msgFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_msgFieldActionPerformed
-
-    private void sendButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendButtonActionPerformed
-        sendMsg();
-    }//GEN-LAST:event_sendButtonActionPerformed
 
     /**
      * @param args the command line arguments
