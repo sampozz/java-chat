@@ -33,14 +33,14 @@ public class Client extends Observable implements Runnable {
             
             // Read from server and print answer
             while (true) {
-                String readline = in.readLine().replace(" ", "&nbsp;");
+                String readline = in.readLine();//.replace(" ", "&nbsp;");
                 if (!readline.startsWith("0x") || readline.startsWith("0x104")) {
                     continue;
                 }
                 if (!readline.startsWith("0x000")) {
                     readline = "<center>" + readline.substring(5) + "</center>";
                 } else {
-                    readline.substring(5);
+                    readline = "<div>" + readline.substring(5) + "</div>";
                 }
                 setMsg(readline);
                 

@@ -50,6 +50,11 @@ public class SocketConnection extends Thread {
                 // Wait for input from client
                 String str = in.readLine();
                 
+                // Null string
+                if (str.equals("")) {
+                    continue;
+                }
+                
                 // Execute command
                 if (str.charAt(0) == '/') {
                     String retCode = runCommand(str);

@@ -56,6 +56,7 @@ public class Server {
         for (int i = 0; i < Server.connections.size(); i++) {
             if (Server.connections.get(i).getClientSocket() != null) {
                 if (Server.connections.get(i).getClientSocket().equals(clientSocket)) {
+                    System.out.println("Server: Client disconnected - " + clientSocket.toString());
                     Server.connections.remove(i);
                 }
             }

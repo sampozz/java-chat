@@ -1,6 +1,5 @@
 package SwingClient;
 
-import java.awt.Color;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -11,7 +10,7 @@ import java.util.Observer;
 public class MainFrame extends javax.swing.JFrame implements Observer {
     
     private Client client;
-            
+
     /**
      * Creates new form MainFrame
      */
@@ -19,12 +18,12 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
         
         initComponents();
         
+        this.setTitle("Java chat");
         jLabel1.setText("<html>" + jLabel1.getText());
         client = new Client();
         client.addObserver(this);
         Thread t = new Thread(client);
         t.start();
-        
     }
 
     /**
@@ -46,25 +45,34 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setForeground(new java.awt.Color(255, 255, 255));
 
         msgField.setBackground(new java.awt.Color(230, 230, 230));
-        msgField.setForeground(new java.awt.Color(150, 150, 150));
+        msgField.setForeground(new java.awt.Color(100, 100, 100));
         msgField.setToolTipText("Write a message...");
-        msgField.setBorder(null);
+        msgField.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 6, 1, 1));
         msgField.setMargin(new java.awt.Insets(0, 50, 0, 0));
-        msgField.setOpaque(false);
+        msgField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                msgFieldActionPerformed(evt);
+            }
+        });
         msgField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 msgFieldKeyPressed(evt);
             }
         });
 
-        sendButton.setBackground(new java.awt.Color(0, 102, 204));
+        sendButton.setBackground(new java.awt.Color(255, 255, 255));
         sendButton.setFont(new java.awt.Font("Dialog", 0, 15)); // NOI18N
-        sendButton.setForeground(new java.awt.Color(255, 255, 255));
+        sendButton.setForeground(new java.awt.Color(100, 100, 100));
         sendButton.setText("Send");
         sendButton.setBorder(null);
         sendButton.addActionListener(new java.awt.event.ActionListener() {
@@ -75,19 +83,22 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
 
         mainPane.setBorder(null);
         mainPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        mainPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         mainPane.setAutoscrolls(true);
         mainPane.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         jLabel1.setBackground(new java.awt.Color(255, 255, 255));
         jLabel1.setFont(new java.awt.Font("Consolas", 1, 12)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(100, 100, 100));
-        jLabel1.setText("____________________________________________");
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
         jLabel1.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         jLabel1.setOpaque(true);
         mainPane.setViewportView(jLabel1);
 
         jLabel2.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
-        jLabel2.setText("Java chat");
+        jLabel2.setForeground(new java.awt.Color(150, 150, 150));
+        jLabel2.setText("Messages");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -96,7 +107,7 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(mainPane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE)
+                    .addComponent(mainPane, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -134,16 +145,24 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void sendButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendButtonActionPerformed
-        sendMsg();
-    }//GEN-LAST:event_sendButtonActionPerformed
-
     private void msgFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_msgFieldKeyPressed
         if (evt.getKeyCode() == 10) {
             sendMsg();
         }
     }//GEN-LAST:event_msgFieldKeyPressed
-    
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        client.getPw().println("/quit");
+    }//GEN-LAST:event_formWindowClosing
+
+    private void msgFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_msgFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_msgFieldActionPerformed
+
+    private void sendButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendButtonActionPerformed
+        sendMsg();
+    }//GEN-LAST:event_sendButtonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -154,12 +173,14 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+            /*for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                //System.out.println(info.getName());
+                if ("Metal".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
-            }
+            }*/
+            javax.swing.UIManager.setLookAndFeel(javax.swing.UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException ex) {
             java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
@@ -173,8 +194,10 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
-                new MainFrame().setVisible(true);
+                MainFrame mf = new MainFrame();
+                mf.setVisible(true);
             }
         });
     }
@@ -195,7 +218,7 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
     
     public void sendMsg() {
         client.getPw().println(msgField.getText());
-        jLabel1.setText(jLabel1.getText() + "<br><div align=\"right\">" + msgField.getText() + "</div>");
+        jLabel1.setText(jLabel1.getText() + "<br><div align=\"right\">" + msgField.getText() + "&nbsp;&nbsp;</div>");
         msgField.setText("");
     }
 }
