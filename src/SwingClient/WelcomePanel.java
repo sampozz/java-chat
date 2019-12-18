@@ -45,10 +45,11 @@ public class WelcomePanel extends javax.swing.JPanel implements Observer {
         setPreferredSize(new java.awt.Dimension(340, 525));
 
         welcomeLabel.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
-        welcomeLabel.setForeground(new java.awt.Color(100, 100, 100));
+        welcomeLabel.setForeground(new java.awt.Color(1, 104, 184));
         welcomeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         welcomeLabel.setText("Welcome!");
 
+        registerButton.setForeground(new java.awt.Color(1, 104, 184));
         registerButton.setText("Register");
         registerButton.setMaximumSize(new java.awt.Dimension(70, 32));
         registerButton.setMinimumSize(new java.awt.Dimension(70, 32));
@@ -59,6 +60,7 @@ public class WelcomePanel extends javax.swing.JPanel implements Observer {
             }
         });
 
+        loginButton.setForeground(new java.awt.Color(1, 104, 184));
         loginButton.setText("Login");
         loginButton.setMaximumSize(new java.awt.Dimension(70, 32));
         loginButton.setMinimumSize(new java.awt.Dimension(70, 32));

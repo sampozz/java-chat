@@ -16,6 +16,7 @@ import java.util.Observer;
 public class MainFrame extends javax.swing.JFrame implements Observer {
 
     public static Client client;
+    private WelcomePanel wp;
     
     /**
      * Creates new form MainFrame
@@ -29,8 +30,12 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
         t.start();
         
         this.setTitle("Java chat");
+        /*JPanel mainPanel = new JPanel(new CardLayout());
+        mainPanel.add(new WelcomePanel());
+        mainPanel.add(new ChatPanel());
+        getContentPane().add(mainPanel, BorderLayout.CENTER);*/
         this.setLayout(new BorderLayout());
-        this.add(new WelcomePanel(), BorderLayout.CENTER);
+        getContentPane().add(new WelcomePanel(), BorderLayout.CENTER);
     }
 
     /**
@@ -44,6 +49,11 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -58,6 +68,10 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        client.getPw().println("/quit");
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments
@@ -96,9 +110,10 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
     }
     
     private void startChat() {
-        //this.getContentPane().removeAll();
-        this.setLayout(new BorderLayout());
-        this.add(new ChatPanel(), BorderLayout.CENTER);
+        getContentPane().removeAll();
+        getContentPane().add(new ChatPanel(), BorderLayout.CENTER);
+        repaint();
+        validate();
     }
 
     @Override

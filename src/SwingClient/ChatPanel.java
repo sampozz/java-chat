@@ -5,17 +5,21 @@
  */
 package SwingClient;
 
+import java.util.Observable;
+import java.util.Observer;
+
 /**
  *
  * @author sam
  */
-public class ChatPanel extends javax.swing.JPanel {
+public class ChatPanel extends javax.swing.JPanel implements Observer {
 
     /**
      * Creates new form ChatPanel
      */
     public ChatPanel() {
         initComponents();
+        MainFrame.client.addObserver(this);
     }
 
     /**
@@ -29,36 +33,113 @@ public class ChatPanel extends javax.swing.JPanel {
 
         scrollPane = new javax.swing.JScrollPane();
         chatLabel = new javax.swing.JLabel();
+        titleLabel = new javax.swing.JLabel();
+        textField = new javax.swing.JTextField();
+        sndButton = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
+        setForeground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(340, 525));
 
         scrollPane.setBackground(new java.awt.Color(255, 255, 255));
+        scrollPane.setBorder(null);
+        scrollPane.setForeground(new java.awt.Color(255, 255, 255));
+        scrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
         chatLabel.setBackground(new java.awt.Color(255, 255, 255));
-        chatLabel.setText("<html>");
+        chatLabel.setFont(new java.awt.Font("Consolas", 1, 12)); // NOI18N
+        chatLabel.setForeground(new java.awt.Color(100, 100, 100));
+        chatLabel.setText("<html>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
         chatLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        chatLabel.setOpaque(true);
         scrollPane.setViewportView(chatLabel);
+
+        titleLabel.setBackground(new java.awt.Color(0, 62, 135));
+        titleLabel.setFont(new java.awt.Font("Microsoft Tai Le", 0, 28)); // NOI18N
+        titleLabel.setForeground(new java.awt.Color(255, 255, 255));
+        titleLabel.setText(" Messages");
+        titleLabel.setOpaque(true);
+
+        textField.setBackground(new java.awt.Color(230, 230, 230));
+        textField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                textFieldKeyPressed(evt);
+            }
+        });
+
+        sndButton.setFont(new java.awt.Font("Dialog", 1, 15)); // NOI18N
+        sndButton.setForeground(new java.awt.Color(1, 104, 184));
+        sndButton.setText("Send");
+        sndButton.setBorder(null);
+        sndButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sndButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(scrollPane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(scrollPane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 328, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(textField, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(sndButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap())
+            .addComponent(titleLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(57, 57, 57)
-                .addComponent(scrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 412, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(56, Short.MAX_VALUE))
+                .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(scrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 409, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(textField, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
+                    .addComponent(sndButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void textFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFieldKeyPressed
+        if (evt.getKeyCode() == 10) {
+            sendMsg();
+        }
+    }//GEN-LAST:event_textFieldKeyPressed
+
+    private void sndButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sndButtonActionPerformed
+        sendMsg();
+    }//GEN-LAST:event_sndButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel chatLabel;
     private javax.swing.JScrollPane scrollPane;
+    private javax.swing.JButton sndButton;
+    private javax.swing.JTextField textField;
+    private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void update(Observable o, Object arg) {
+        String msg = MainFrame.client.getMsg();
+        if (!msg.startsWith("0x000")) {
+            msg = "<center>" + msg.substring(5) + "</center>";
+        } else {
+            msg = "<div>" + msg.substring(5) + "</div>";
+        }
+        chatLabel.setText(chatLabel.getText() + "<br>" + msg);
+    }
+    
+    public void sendMsg() {
+        MainFrame.client.getPw().println(textField.getText());
+        chatLabel.setText(chatLabel.getText() + "<br><div align=\"right\">" + textField.getText() + "&nbsp;&nbsp;</div>");
+        textField.setText("");
+    }
 }

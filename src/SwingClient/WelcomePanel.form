@@ -84,7 +84,7 @@
           <Font name="Dialog" size="36" style="1"/>
         </Property>
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="64" green="64" red="64" type="rgb"/>
+          <Color blue="b8" green="68" red="1" type="rgb"/>
         </Property>
         <Property name="horizontalAlignment" type="int" value="0"/>
         <Property name="text" type="java.lang.String" value="Welcome!"/>
@@ -92,6 +92,9 @@
     </Component>
     <Component class="javax.swing.JButton" name="registerButton">
       <Properties>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="b8" green="68" red="1" type="rgb"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Register"/>
         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[70, 32]"/>
@@ -109,6 +112,9 @@
     </Component>
     <Component class="javax.swing.JButton" name="loginButton">
       <Properties>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="b8" green="68" red="1" type="rgb"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Login"/>
         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[70, 32]"/>
