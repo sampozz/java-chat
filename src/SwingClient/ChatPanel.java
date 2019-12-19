@@ -133,13 +133,25 @@ public class ChatPanel extends javax.swing.JPanel implements Observer {
             msg = "<center>" + msg.substring(5) + "</center>";
         } else {
             msg = "<div>" + msg.substring(5) + "</div>";
+            msg = cutMsg(msg);
         }
         chatLabel.setText(chatLabel.getText() + "<br>" + msg);
     }
     
     public void sendMsg() {
         MainFrame.client.getPw().println(textField.getText());
-        chatLabel.setText(chatLabel.getText() + "<br><div align=\"right\">" + textField.getText() + "&nbsp;&nbsp;</div>");
+        chatLabel.setText(chatLabel.getText() + "<br><div align=\"right\" style=\"margin-right: 10px;\">" + cutMsg(textField.getText()) + "</div>");
         textField.setText("");
+    }
+    
+    public String cutMsg(String msg) {
+        String ret = "";
+        for (int i = 0; i < msg.length(); i++) {
+            ret += msg.charAt(i);
+            if ((i+1) % 30 == 0) {
+                ret += "<br>";
+            }
+        }
+        return ret;
     }
 }

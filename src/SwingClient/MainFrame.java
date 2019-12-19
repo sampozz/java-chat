@@ -16,7 +16,6 @@ import java.util.Observer;
 public class MainFrame extends javax.swing.JFrame implements Observer {
 
     public static Client client;
-    private WelcomePanel wp;
     
     /**
      * Creates new form MainFrame
