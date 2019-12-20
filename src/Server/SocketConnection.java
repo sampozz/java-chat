@@ -2,7 +2,7 @@ package Server;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Every connection to the server is identified by the socket and 
@@ -18,11 +18,11 @@ public class SocketConnection extends Thread {
     private BufferedReader in;
     private PrintWriter out;
     // destOut is an array that allows multiple destinations
-    private ArrayList<PrintWriter> destOut;
+    private HashMap<String, PrintWriter> destOut;
 
     public SocketConnection(Socket socket) {
         this.clientSocket = socket;
-        this.destOut = new ArrayList<PrintWriter>();
+        this.destOut = new HashMap<>();
     }
 
     @Override
@@ -70,11 +70,11 @@ public class SocketConnection extends Thread {
                 }
 
                 // Reply to destination
-                for (PrintWriter p: destOut) {
-                    if (p != null) {
-                        p.println("0x000 " + getUser().getUsername() + ": " + str);
+                destOut.forEach((k, v) -> {
+                    if (v != null) {
+                        v.println("0x000 " + getUser().getUsername() + ": " + str);
                     }
-                }
+                });
                 
             }
         } catch (IOException e) { }
@@ -144,12 +144,16 @@ public class SocketConnection extends Thread {
             return "0x230";
         }
         String dest = param.replace("/addDest ", "").replace(" ", "");
-        // Validate Command
         if (dest.equals("")) {
+            // Invalid Command
             return "0x221";
         }
+        if (destOut.containsKey(dest)) {
+            // Already connected
+            return "0x222";
+        }
         if (Server.isConnected(dest)) {
-            destOut.add(new PrintWriter(new BufferedWriter(
+            destOut.put(dest, new PrintWriter(new BufferedWriter(
                     new OutputStreamWriter(Server.getConnection(dest).getClientSocket().getOutputStream())
                 ), true));
             // successful
@@ -245,7 +249,7 @@ public class SocketConnection extends Thread {
         for (String destName: dest) {
             // Search for destination user
             if (Server.isConnected(destName)) {
-                destOut.add(new PrintWriter(new BufferedWriter(
+                destOut.put(destName, new PrintWriter(new BufferedWriter(
                         new OutputStreamWriter(Server.getConnection(destName).getClientSocket().getOutputStream())
                     ), true));
                 dests += destName + ", ";

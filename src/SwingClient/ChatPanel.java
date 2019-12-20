@@ -9,6 +9,8 @@ import javax.swing.JScrollBar;
  * @author sam
  */
 public class ChatPanel extends javax.swing.JPanel implements Observer {
+    
+    private String lastAddedDest = "";
 
     /**
      * Creates new form ChatPanel
@@ -32,9 +34,13 @@ public class ChatPanel extends javax.swing.JPanel implements Observer {
         titleLabel = new javax.swing.JLabel();
         textField = new javax.swing.JTextField();
         sndButton = new javax.swing.JButton();
-        jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        destPanel = new javax.swing.JPanel();
+        destTitleLabel = new javax.swing.JLabel();
+        destScrollPanel = new javax.swing.JScrollPane();
+        destLabel = new javax.swing.JLabel();
+        destField = new javax.swing.JTextField();
+        addDestButton = new javax.swing.JButton();
+        removeDestButton = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(227, 242, 253));
         setForeground(new java.awt.Color(255, 255, 255));
@@ -78,35 +84,80 @@ public class ChatPanel extends javax.swing.JPanel implements Observer {
             }
         });
 
-        jPanel1.setBackground(new java.awt.Color(227, 242, 253));
+        destPanel.setBackground(new java.awt.Color(227, 242, 253));
 
-        jLabel1.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel1.setFont(new java.awt.Font("Microsoft Tai Le", 0, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 62, 135));
-        jLabel1.setText("  Destinations");
-        jLabel1.setOpaque(true);
+        destTitleLabel.setBackground(new java.awt.Color(255, 255, 255));
+        destTitleLabel.setFont(new java.awt.Font("Microsoft Tai Le", 0, 18)); // NOI18N
+        destTitleLabel.setForeground(new java.awt.Color(0, 62, 135));
+        destTitleLabel.setText("  Destinations");
+        destTitleLabel.setOpaque(true);
 
-        jScrollPane1.setBackground(new java.awt.Color(227, 242, 253));
-        jScrollPane1.setBorder(null);
-        jScrollPane1.setForeground(new java.awt.Color(227, 242, 253));
-        jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        jScrollPane1.setToolTipText("");
+        destScrollPanel.setBackground(new java.awt.Color(227, 242, 253));
+        destScrollPanel.setBorder(null);
+        destScrollPanel.setForeground(new java.awt.Color(227, 242, 253));
+        destScrollPanel.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        destScrollPanel.setToolTipText("");
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(6, 6, 6)
-                .addComponent(jScrollPane1))
+        destLabel.setBackground(new java.awt.Color(227, 242, 253));
+        destLabel.setFont(new java.awt.Font("Consolas", 1, 12)); // NOI18N
+        destLabel.setForeground(new java.awt.Color(100, 100, 100));
+        destLabel.setText("<html>Not connected to any <br>destination");
+        destLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        destLabel.setOpaque(true);
+        destScrollPanel.setViewportView(destLabel);
+
+        destField.setBackground(new java.awt.Color(255, 255, 255));
+        destField.setBorder(null);
+        destField.setMargin(new java.awt.Insets(0, 5, 0, 0));
+
+        addDestButton.setForeground(new java.awt.Color(1, 104, 184));
+        addDestButton.setText("Add");
+        addDestButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addDestButtonActionPerformed(evt);
+            }
+        });
+
+        removeDestButton.setForeground(new java.awt.Color(1, 104, 184));
+        removeDestButton.setText("Remove all");
+        removeDestButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeDestButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout destPanelLayout = new javax.swing.GroupLayout(destPanel);
+        destPanel.setLayout(destPanelLayout);
+        destPanelLayout.setHorizontalGroup(
+            destPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(destTitleLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(destPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(destPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(destPanelLayout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(destScrollPanel))
+                    .addGroup(destPanelLayout.createSequentialGroup()
+                        .addGroup(destPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(destField)
+                            .addGroup(destPanelLayout.createSequentialGroup()
+                                .addComponent(addDestButton, javax.swing.GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(removeDestButton)))
+                        .addContainerGap())))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+        destPanelLayout.setVerticalGroup(
+            destPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(destPanelLayout.createSequentialGroup()
+                .addComponent(destTitleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1)
+                .addComponent(destField, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(destPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(addDestButton, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(removeDestButton, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(destScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 397, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -115,7 +166,7 @@ public class ChatPanel extends javax.swing.JPanel implements Observer {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(destPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
@@ -138,7 +189,7 @@ public class ChatPanel extends javax.swing.JPanel implements Observer {
                     .addComponent(sndButton, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
                     .addComponent(textField, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE))
                 .addContainerGap())
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(destPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -152,12 +203,35 @@ public class ChatPanel extends javax.swing.JPanel implements Observer {
         sendMsg();
     }//GEN-LAST:event_sndButtonActionPerformed
 
+    private void addDestButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addDestButtonActionPerformed
+        try {
+            MainFrame.client.getPw().println("/addDest " + destField.getText().replace(" ", ""));
+            lastAddedDest = destField.getText().replace(" ", "");
+            destField.setText("");
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }//GEN-LAST:event_addDestButtonActionPerformed
+
+    private void removeDestButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeDestButtonActionPerformed
+        try {
+            MainFrame.client.getPw().println("/removeDest");
+            destLabel.setText("<html>Not connected to any <br>destination");
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }//GEN-LAST:event_removeDestButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addDestButton;
     private javax.swing.JLabel chatLabel;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField destField;
+    private javax.swing.JLabel destLabel;
+    private javax.swing.JPanel destPanel;
+    private javax.swing.JScrollPane destScrollPanel;
+    private javax.swing.JLabel destTitleLabel;
+    private javax.swing.JButton removeDestButton;
     private javax.swing.JScrollPane scrollPane;
     private javax.swing.JButton sndButton;
     private javax.swing.JTextField textField;
@@ -168,9 +242,17 @@ public class ChatPanel extends javax.swing.JPanel implements Observer {
     public void update(Observable o, Object arg) {
         String msg = MainFrame.client.getMsg();
         if (!msg.startsWith("0x000")) {
+            if (msg.startsWith("0x103")) {
+                if (!lastAddedDest.equals("")) {
+                    if (destLabel.getText().equals("<html>Not connected to any <br>destination")) {
+                    destLabel.setText("<html>");
+                }
+                    destLabel.setText(destLabel.getText() + lastAddedDest + "<br>");
+                }
+            }
             msg = "<center>" + msg.substring(5) + "</center>";
         } else {
-            msg = "<div style=\"margin-left: 5px;\">" + msg.substring(5) + "</div>";
+            msg = "<div>&nbsp;" + msg.substring(5) + "</div>";
             msg = cutMsg(msg);
         }
         chatLabel.setText(chatLabel.getText() + "<br>" + msg);

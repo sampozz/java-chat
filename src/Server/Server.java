@@ -113,6 +113,7 @@ public class Server {
         codes.put("0x211", "Register syntax error, specify username and password");
         codes.put("0x220", "Destination user not found");
         codes.put("0x221", "Destination syntax error, specify destination");
+        codes.put("0x222", "Already connected to this destination");
         codes.put("0x230", "User not authenticated");
         codes.put("0x231", "User already authenticated");
         codes.put("0x2FF", "An error occured, try again later");
