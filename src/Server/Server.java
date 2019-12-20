@@ -69,7 +69,7 @@ public class Server {
      * @return 
      */
     static Boolean isConnected(String username) {
-        for (SocketConnection c : connections) {
+        for (SocketConnection c: connections) {
             if (c.getUser() != null) {
                 if (c.getUser().getUsername().equals(username)) {
                     return true;
@@ -85,7 +85,7 @@ public class Server {
      * @return 
      */
     static SocketConnection getConnection(String username) {
-        for (SocketConnection c : connections) {
+        for (SocketConnection c: connections) {
             if (c.getUser() != null) {
                 if (c.getUser().getUsername().equals(username)) {
                     return c;
@@ -104,6 +104,7 @@ public class Server {
         codes.put("0x102", "Signed up");
         codes.put("0x103", "Connected to destination");
         codes.put("0x104", "Help");
+        codes.put("0x105", "Disconnected from every destination");
         codes.put("0x1FF", "Disconnect");
         codes.put("0x200", "User doesn't exist");
         codes.put("0x201", "Incorrect username or password");
