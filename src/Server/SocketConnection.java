@@ -2,7 +2,7 @@ package Server;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Every connection to the server is identified by the socket and 
@@ -17,12 +17,12 @@ public class SocketConnection extends Thread {
     private InputStreamReader isr;
     private BufferedReader in;
     private PrintWriter out;
-    // destOut is an array to allow multiple destinations
-    private ArrayList<PrintWriter> destOut;
+    // destOut is an array that allows multiple destinations
+    private HashMap<String, PrintWriter> destOut;
 
     public SocketConnection(Socket socket) {
         this.clientSocket = socket;
-        this.destOut = new ArrayList<PrintWriter>();
+        this.destOut = new HashMap<>();
     }
 
     @Override
@@ -70,24 +70,17 @@ public class SocketConnection extends Thread {
                 }
 
                 // Reply to destination
-                for (PrintWriter p: destOut) {
-                    if (p != null) {
-                        p.println("0x000 " + getUser().getUsername() + ": " + str);
+                destOut.forEach((k, v) -> {
+                    if (v != null) {
+                        v.println("0x000 " + getUser().getUsername() + ": " + str);
                     }
-                }
+                });
                 
             }
         } catch (IOException e) { }
     }
     
     /**
-     * Return command code:
-     * 1 - Quit
-     * 2 - Set Destination
-     * 3 - List connected users
-     * 4 - Login
-     * 5 - Register
-     * 42 - Help
      * @param msg
      * @return 
      */
@@ -97,8 +90,10 @@ public class SocketConnection extends Thread {
             return cmdQuit();
         if (parse[0].equals("/dest"))
             return cmdDest(msg);
-        if (parse[0].equals("/list"))
-            return "";
+        if (parse[0].equals("/addDest"))
+            return cmdAddDest(msg);
+        if (parse[0].equals("/removeDest"))
+            return cmdRemoveDest(msg);
         if (parse[0].equals("/login"))
             return cmdLogin(msg);
         if (parse[0].equals("/register"))
@@ -108,13 +103,64 @@ public class SocketConnection extends Thread {
     
     private String getHelp() {
         return "0x104 Commands:\n"
-                + "/dest username       # start chatting\n"
+                + "/dest usr            # start chatting\n"
                 + "/dest usr1, usr2     # chat with multiple users\n"
-                + "/list                # view connected users\n"
+                + "/addDest usr         # add a destination user\n"
+                + "/removeDest          # remove all destinations\n"
                 + "/login user, pwd     # login\n"
                 + "/register user, pwd  # register\n"
                 + "/quit                # diconnect\n"
                 + "/help                # get help";
+    }
+    
+    /**
+     * Remove all destinations
+     * @param param
+     * @return
+     * @throws IOException 
+     */
+    private String cmdRemoveDest(String cmd) {
+        // User not authenticated
+        if (user == null) {
+            return "0x230";
+        }
+        // Validate Command
+        if (!cmd.equals("/removeDest")) {
+            return "0x221";
+        }
+        destOut.clear();
+        return "0x105";
+    }
+    
+    /**
+     * Add a destination to list
+     * @param param
+     * @return
+     * @throws IOException 
+     */
+    private String cmdAddDest(String param) throws IOException {
+        // User not authenticated
+        if (user == null) {
+            return "0x230";
+        }
+        String dest = param.replace("/addDest ", "").replace(" ", "");
+        if (dest.equals("")) {
+            // Invalid Command
+            return "0x221";
+        }
+        if (destOut.containsKey(dest)) {
+            // Already connected
+            return "0x222";
+        }
+        if (Server.isConnected(dest)) {
+            destOut.put(dest, new PrintWriter(new BufferedWriter(
+                    new OutputStreamWriter(Server.getConnection(dest).getClientSocket().getOutputStream())
+                ), true));
+            // successful
+            return "0x103";
+        }
+        // dest not found
+        return "0x220";
     }
     
     /**
@@ -199,10 +245,11 @@ public class SocketConnection extends Thread {
         // Clear old destinations
         destOut.clear();
         String dests = "";
+        // Add new dests
         for (String destName: dest) {
             // Search for destination user
             if (Server.isConnected(destName)) {
-                destOut.add(new PrintWriter(new BufferedWriter(
+                destOut.put(destName, new PrintWriter(new BufferedWriter(
                         new OutputStreamWriter(Server.getConnection(destName).getClientSocket().getOutputStream())
                     ), true));
                 dests += destName + ", ";

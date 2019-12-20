@@ -16,7 +16,6 @@ import java.util.Observer;
 public class MainFrame extends javax.swing.JFrame implements Observer {
 
     public static Client client;
-    private WelcomePanel wp;
     
     /**
      * Creates new form MainFrame
@@ -30,10 +29,6 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
         t.start();
         
         this.setTitle("Java chat");
-        /*JPanel mainPanel = new JPanel(new CardLayout());
-        mainPanel.add(new WelcomePanel());
-        mainPanel.add(new ChatPanel());
-        getContentPane().add(mainPanel, BorderLayout.CENTER);*/
         this.setLayout(new BorderLayout());
         getContentPane().add(new WelcomePanel(), BorderLayout.CENTER);
     }
@@ -59,7 +54,7 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 340, Short.MAX_VALUE)
+            .addGap(0, 525, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -70,7 +65,11 @@ public class MainFrame extends javax.swing.JFrame implements Observer {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        client.getPw().println("/quit");
+        try {
+            client.getPw().println("/quit");
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }//GEN-LAST:event_formWindowClosing
 
     /**
