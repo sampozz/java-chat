@@ -58,10 +58,10 @@ public class Client extends Observable implements Runnable {
             System.out.println("Client: Unknown host, " + serverAddress);
         // Transmission error
         } catch (IOException e) {
-            System.out.println("Client: Closing transmission...");
+            System.out.println("Client: Unknown host, " + serverAddress);
         // Exception handler
         } catch (Exception e) { 
-            System.out.println(e);
+            System.out.println("");
         }
         System.out.println("Client: Connection ended, goodbye");
     }
@@ -76,7 +76,10 @@ public class Client extends Observable implements Runnable {
         return this.msg;
     }
     
-    public PrintWriter getPw() {
+    public PrintWriter getPw() throws Exception {
+        if (pw == null) {
+            throw new Exception("Client: not connected to server.");
+        }
         return this.pw;
     }
     

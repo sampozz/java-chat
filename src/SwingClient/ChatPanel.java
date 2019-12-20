@@ -1,12 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package SwingClient;
 
 import java.util.Observable;
 import java.util.Observer;
+import javax.swing.JScrollBar;
 
 /**
  *
@@ -52,6 +48,7 @@ public class ChatPanel extends javax.swing.JPanel implements Observer {
         chatLabel.setForeground(new java.awt.Color(100, 100, 100));
         chatLabel.setText("<html>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
         chatLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        chatLabel.setAutoscrolls(true);
         chatLabel.setOpaque(true);
         scrollPane.setViewportView(chatLabel);
 
@@ -136,12 +133,20 @@ public class ChatPanel extends javax.swing.JPanel implements Observer {
             msg = cutMsg(msg);
         }
         chatLabel.setText(chatLabel.getText() + "<br>" + msg);
+        JScrollBar scroll = scrollPane.getVerticalScrollBar();
+        scroll.setValue(scroll.getMaximum());
     }
     
     public void sendMsg() {
-        MainFrame.client.getPw().println(textField.getText());
+        try {
+            MainFrame.client.getPw().println(textField.getText());
+        } catch (Exception e) {
+            System.out.println(e);
+        }
         chatLabel.setText(chatLabel.getText() + "<br><div align=\"right\" style=\"margin-right: 10px;\">" + cutMsg(textField.getText()) + "</div>");
         textField.setText("");
+        JScrollBar scroll = scrollPane.getVerticalScrollBar();
+        scroll.setValue(scroll.getMaximum());
     }
     
     public String cutMsg(String msg) {

@@ -128,11 +128,21 @@ public class WelcomePanel extends javax.swing.JPanel implements Observer {
     }// </editor-fold>//GEN-END:initComponents
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
-        MainFrame.client.getPw().println("/login " + userField.getText() + ", " + passwordField.getText());
+        try {
+            MainFrame.client.getPw().println("/login " + userField.getText() + ", " + passwordField.getText());
+        } catch (Exception e) {
+            System.out.println(e);
+            returnCodeLabel.setText("Cannot connect to server");
+        }
     }//GEN-LAST:event_loginButtonActionPerformed
 
     private void registerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerButtonActionPerformed
-        MainFrame.client.getPw().println("/register " + userField.getText() + ", " + passwordField.getText());
+        try {
+            MainFrame.client.getPw().println("/register " + userField.getText() + ", " + passwordField.getText());
+        } catch (Exception e) {
+            System.out.println(e);
+            returnCodeLabel.setText("Cannot connect to server");
+        }
     }//GEN-LAST:event_registerButtonActionPerformed
 
 
